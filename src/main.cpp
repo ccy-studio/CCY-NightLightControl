@@ -2,15 +2,15 @@
  * @Description:
  * @Author: chenzedeng
  * @Date: 2023-05-06 10:48:38
- * @LastEditTime: 2023-05-13 01:52:42
+ * @LastEditTime: 2023-05-20 16:00:24
  */
 #define EI_ARDUINO_INTERRUPTED_PIN
 #include <Arduino.h>
 #include "RCSwitch.h"
 
-#define RF_PIN 2
+#define RF_PIN 3
 #define LED_READ_PIN 1
-#define LED_WHITE_PIN 3
+#define LED_WHITE_PIN 2
 
 #define OPEN_CODE_WHITE 2763140
 #define PWM_CODE 2763144
@@ -28,13 +28,14 @@ unsigned long lastTime = 0;
 unsigned long code;
 
 void setup() {
-    // digitalWrite(LED_READ_PIN,LOW);
-    // digitalWrite(LED_WHITE_PIN,LOW);
-    pinMode(RF_PIN, INPUT_PULLUP);
-    mySwitch.enableReceive(RF_PIN);
-
     pinMode(LED_READ_PIN, FUNCTION_3);
     pinMode(LED_WHITE_PIN, FUNCTION_3);
+
+    digitalWrite(LED_READ_PIN, LOW);
+    digitalWrite(LED_WHITE_PIN, LOW);
+
+    pinMode(RF_PIN, INPUT_PULLUP);
+    mySwitch.enableReceive(RF_PIN);
 }
 
 void openOrCloseLed(int ledIndex, int openState) {
@@ -46,7 +47,7 @@ void openOrCloseLed(int ledIndex, int openState) {
         analogWrite(ledIndex, pwmValue);
     } else {
         // 关闭
-        analogWrite(ledIndex, 0);
+        digitalWrite(ledIndex, LOW);
     }
 }
 
